@@ -2,8 +2,17 @@ import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
 
+def follow(tek,count,pos,url):
 
-class
+    if tek >count:
+        return ''
+
+    html = urllib.request.urlopen(url, context=ctx).read()
+    soup = BeautifulSoup(html, 'html.parser')
+
+    tags = soup('a')
+    tag = tags[pos-1]
+    return tag.contents[0] + ' ' + follow(tek+1,count,pos,tag.get('href', None))
 
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
@@ -14,17 +23,10 @@ ctx.verify_mode = ssl.CERT_NONE
 #count = input('Enter count:')
 #position = input('Enter position')
 
-url = 'http://py4e-data.dr-chuck.net/known_by_Fikret.html'
-count = 4
-position = 3
+url = 'http://py4e-data.dr-chuck.net/known_by_Alekzander.html'
+count = 7
+position = 18
 
-html = urllib.request.urlopen(url, context=ctx).read()
-soup = BeautifulSoup(html, 'html.parser')
+print(follow(0,count-1,position,url))
 
-# Retrive all anchor tags
-tags = soup('span') #<a....>...</a>
-for tag in tags:
-    s+=int(tag.contents[0])
-    c+=1
-print('Count ', c)
-print('Sum ', s)
+
